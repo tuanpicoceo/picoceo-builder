@@ -1,0 +1,21 @@
+node_modules/
+dist/
+*.log
+.env
+.env.local
+.env.*.local
+.backbone-store.json
+
+# local tooling and caches
+.claude/
+.firebase/
+scratch/
+
+# third-party reference PDF (Bambu Lab guide): not ours to redistribute
+docs/CyberBrick_Robotics_Hardware_and_3D_Design_Guide.pdf
+
+# hackathon submission material and hosting config (kept local)
+submission/
+apphosting.yaml
+.firebaserc
+FEATURES.md

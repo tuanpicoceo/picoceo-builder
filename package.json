@@ -1,0 +1,41 @@
+{
+  "name": "cyberbuild",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AI robot designer for CyberBrick modules: prompt -> parametric printable parts + physics simulation + firmware",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "start": "node server/prod.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx scripts/selftest.ts && tsx scripts/standardtest.ts && tsx scripts/facetest.ts && tsx scripts/simtest.ts && tsx scripts/kittest.ts && tsx scripts/flashtest.ts && node scripts/aimock.mjs && node scripts/geminimock.mjs && node scripts/metamock.mjs && node scripts/metamediatest.mjs && tsx scripts/buytest.ts && tsx scripts/patterntest.ts && tsx scripts/shapetest.ts && node scripts/backbonetest.mjs",
+    "test:cad": "tsx scripts/selftest.ts",
+    "test:sim": "tsx scripts/simtest.ts",
+    "test:kit": "tsx scripts/kittest.ts",
+    "test:ai": "node scripts/aimock.mjs && node scripts/geminimock.mjs && node scripts/metamock.mjs && node scripts/metamediatest.mjs",
+    "models:gen": "tsx scripts/generate_reference_models.ts",
+    "firmware:dump": "tsx scripts/fwdump.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.1.0",
+    "@dimforge/rapier3d-compat": "^0.21.0",
+    "@google/genai": "^2.31.0",
+    "fflate": "^0.8.3",
+    "firebase": "^13.1.0",
+    "manifold-3d": "^3.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

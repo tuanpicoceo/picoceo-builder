@@ -1,0 +1,101 @@
+[
+  {
+    "id": "B-XA003",
+    "name": "ESP32-C3 Core Controller",
+    "file": "B-XA003_ESP32_Core.stl",
+    "url": "/reference/B-XA003_ESP32_Core.stl",
+    "description": "32-bit RISC-V @160MHz controller with USB-C and stacking bus",
+    "triangles": 464,
+    "sizeKb": 23
+  },
+  {
+    "id": "B-XA004",
+    "name": "Receiver & Power Shield",
+    "file": "B-XA004_Power_Shield.stl",
+    "url": "/reference/B-XA004_Power_Shield.stl",
+    "description": "4x Servo headers S1-S4, D1 addressable LED port, M2.5 23x24mm pitch",
+    "triangles": 708,
+    "sizeKb": 35
+  },
+  {
+    "id": "B-PG001",
+    "name": "180° Positional Micro Servo",
+    "file": "B-PG001_180_Servo.stl",
+    "url": "/reference/B-PG001_180_Servo.stl",
+    "description": "1.2 kgf·cm @ 6V, 21T spline Ø4.8mm, ear span 32.4mm, ear pitch 27.8mm",
+    "triangles": 388,
+    "sizeKb": 19
+  },
+  {
+    "id": "B-PG002",
+    "name": "360° Continuous Micro Servo",
+    "file": "B-PG002_Continuous_Servo.stl",
+    "url": "/reference/B-PG002_Continuous_Servo.stl",
+    "description": "120 RPM @ 6V, 1.6 kgf·cm, 21T micro spline",
+    "triangles": 388,
+    "sizeKb": 19
+  },
+  {
+    "id": "B-GM001",
+    "name": "030 High-Torque Geared Motor",
+    "file": "B-GM001_Geared_Motor.stl",
+    "url": "/reference/B-GM001_Geared_Motor.stl",
+    "description": "180 RPM @ 6V, 2.4 kgf·cm, Ø3.0mm D-shaft with 2.5mm flat",
+    "triangles": 120,
+    "sizeKb": 6
+  },
+  {
+    "id": "B-PC003",
+    "name": "7.4V 800mAh 2S Li-ion Battery",
+    "file": "B-PC003_2S_Battery.stl",
+    "url": "/reference/B-PC003_2S_Battery.stl",
+    "description": "Twin 14500 Li-ion cells, integrated BMS, XH2.54 2-pin connector",
+    "triangles": 176,
+    "sizeKb": 9
+  },
+  {
+    "id": "B-XA007",
+    "name": "Slide Toggle Power Switch",
+    "file": "B-XA007_Toggle_Switch.stl",
+    "url": "/reference/B-XA007_Toggle_Switch.stl",
+    "description": "Rated 50V/0.5A, SPDT toggle, 1x M2.5 ear mounting hole",
+    "triangles": 202,
+    "sizeKb": 10
+  },
+  {
+    "id": "B-XA006",
+    "name": "LED Distribution Hub PCB",
+    "file": "B-XA006_LED_Hub.stl",
+    "url": "/reference/B-XA006_LED_Hub.stl",
+    "description": "6-branch WS2812 splitter with M2.5 center mounting boss",
+    "triangles": 304,
+    "sizeKb": 15
+  },
+  {
+    "id": "B-KB003",
+    "name": "WS2812 RGBW LED Module",
+    "file": "B-KB003_RGBW_LED.stl",
+    "url": "/reference/B-KB003_RGBW_LED.stl",
+    "description": "Addressable 5050 package, 6.0 x 6.0 x 2.8 mm",
+    "triangles": 108,
+    "sizeKb": 5
+  },
+  {
+    "id": "Horn-21T",
+    "name": "21T Micro Spline Single-Arm Horn",
+    "file": "Horn_21T_Micro_Spline.stl",
+    "url": "/reference/Horn_21T_Micro_Spline.stl",
+    "description": "Standard CyberBrick 21T horn with pilot holes at 10.0 and 13.5 mm",
+    "triangles": 380,
+    "sizeKb": 19
+  },
+  {
+    "id": "Ref-Clamp",
+    "name": "Under-Hood Cross-Clamp Joint",
+    "file": "Reference_Under_Hood_Tongue_Cheek_Clamp.stl",
+    "url": "/reference/Reference_Under_Hood_Tongue_Cheek_Clamp.stl",
+    "description": "Guide s.10 Figure 4.1 Tongue & Cheek Cross-Lock joint with captive M3 nut",
+    "triangles": 244,
+    "sizeKb": 12
+  }
+]

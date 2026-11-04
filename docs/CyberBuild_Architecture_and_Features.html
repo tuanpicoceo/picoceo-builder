@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>CyberBuild AI - Kiến Trúc Hệ Thống & Đặc Tả Chức Năng</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Cover Page */
+    .cover {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      min-height: 900px;
+      padding: 40px 20px 20px 20px;
+      border-bottom: 4px solid #0284c7;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 16px;
+    }
+
+    .brand-tag {
+      font-size: 13pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #0369a1;
+      text-transform: uppercase;
+    }
+
+    .confidential-badge {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-main {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .cover-title {
+      font-size: 28pt;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #0f172a;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.5px;
+    }
+
+    .cover-subtitle {
+      font-size: 14pt;
+      font-weight: 400;
+      color: #475569;
+      margin: 0 0 28px 0;
+      line-height: 1.4;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .cover-meta-item strong {
+      display: block;
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .cover-meta-item span {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Headings */
+    h1 {
+      font-size: 18pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 8px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+      page-break-after: avoid;
+    }
+
+    h2 {
+      font-size: 13.5pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      border-left: 4px solid #0284c7;
+      padding-left: 10px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin: 0 0 10px 0;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin: 0 0 12px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    /* Diagrams & Architecture Blocks */
+    .arch-diagram {
+      background: #090e17;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-family: "Cascadia Code", "Fira Code", Consolas, Courier, monospace;
+      font-size: 8pt;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+      page-break-inside: avoid;
+    }
+
+    /* Callout & Alerts */
+    .callout {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 9.5pt;
+    }
+
+    .callout.info {
+      background: #f0f9ff;
+      border-left-color: #0284c7;
+    }
+
+    .callout.warn {
+      background: #fffbeb;
+      border-left-color: #d97706;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pass { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-warn { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-fail { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .badge-core { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+
+    .step-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      page-break-inside: avoid;
+    }
+
+    .step-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 6px;
+    }
+
+    .step-number-tag {
+      font-size: 8pt;
+      font-weight: 800;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .step-box-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    code {
+      font-family: "Cascadia Code", Consolas, Courier, monospace;
+      font-size: 8.5pt;
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #0369a1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== COVER PAGE ==================== -->
+  <div class="cover">
+    <div class="cover-top">
+      <div class="brand-tag">CyberBrick &amp; CyberBuild AI</div>
+      <div class="confidential-badge">BÁO CÁO KỸ THUẬT &amp; KIẾN TRÚC HỆ THỐNG</div>
+    </div>
+
+    <div class="cover-main">
+      <h1 class="cover-title">Kiến Trúc Hệ Thống &amp;<br>Đặc Tả Chi Tiết Chức Năng</h1>
+      <p class="cover-subtitle">
+        Nền Tảng AI Thiết Kế Robot &amp; Cơ Điện Tử Thông Minh Khép Kín:<br>
+        Từ Ý Tưởng Ngôn Ngữ Tự Nhiên Đến 3D CAD Solid, Mô Phỏng Vật Lý Rapier3D, Firmware Nhúng ESP32-C3 &amp; Bộ Hồ Sơ Chế Tạo 3MF.
+      </p>
+
+      <div class="cover-meta-grid">
+        <div class="cover-meta-item">
+          <strong>Sản phẩm / Nền tảng</strong>
+          <span>CyberBuild AI (Version 2.4 - Production)</span>
+        </div>
+        <div class="cover-meta-item">
+          <strong>Hệ sinh thái phần cứng</strong>
+          <span>CyberBrick Modular Hardware Standard</span>
+        </div>
+        <div class="cover-meta-item">
+          <strong>Mô hình AI &amp; Hạ tầng</strong>
+          <span>Meta Muse LLM · Cloud Run · Firebase</span>
+        </div>
+        <div class="cover-meta-item">
+          <strong>Ngày phát hành tài liệu</strong>
+          <span>Tháng 11 / 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size: 8.5pt; color: #94a3b8; display: flex; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 12px;">
+      <span>Bản quyền © 2026 CyberBrick System. Tất cả quyền được bảo lưu.</span>
+      <span>Tài liệu nội bộ kỹ thuật</span>
+    </div>
+  </div>
+
+  <!-- ==================== MỤC LỤC & TỔNG QUAN ==================== -->
+  <h1>1. Tổng Quan Hệ Thống (System Overview)</h1>
+
+  <h2>1.1. Sứ mệnh và Bài toán Thực tế</h2>
+  <p>
+    Trong ngành chế tạo robot và cơ điện tử truyền thống, khoảng cách từ <strong>ý tưởng ban đầu</strong> đến <strong>sản phẩm vật lý hoàn chỉnh</strong> luôn gặp phải các rào cản phân mảnh nghiêm trọng:
+  </p>
+  <ul>
+    <li><strong>Rào cản thiết kế cơ khí (CAD):</strong> Phải dựng thủ công từng chi tiết, tính toán dung sai lắp ghép (push-fit, slide-fit), xử lý lỗ ren ốc, dẫn đến lỗi va chạm tĩnh hoặc không đủ khoảng không cho tuốc-nơ-vít thao tác.</li>
+    <li><strong>Rào cản thẩm định khả năng in 3D:</strong> Các mô hình dựng bằng công cụ đồ họa bề mặt thông thường dễ bị lỗi lưới (non-manifold meshes), rách mặt, không kín nước (watertight), gây lỗi cắt lớp (slicing failure) trên máy in 3D.</li>
+    <li><strong>Rào cản điện tử &amp; phân bổ chân GPIO:</strong> Đấu nối sai cổng I/O, quá tải dòng điện hoặc ước tính sai dung lượng pin.</li>
+    <li><strong>Rào cản firmware &amp; chuyển động học:</strong> Lập trình mã nguồn điều khiển động cơ, đồng bộ thời gian thực và cân bằng tư thế đòi hỏi kiến thức chuyên sâu về vi điều khiển và vật lý động lực học.</li>
+  </ul>
+  <p>
+    <strong>CyberBuild AI</strong> được xây dựng như một <em>Hệ điều hành thiết kế cơ điện tử thông minh (AI-driven Mechatronics OS)</em>. Người dùng chỉ cần nhập một câu mô tả ngôn ngữ tự nhiên (hoặc tải lên ảnh phác thảo), hệ thống sẽ tự động phối hợp qua <strong>Quy trình 7 Bước (7-Step Design Flow)</strong> để tổng hợp ra toàn bộ: bản dựng hình học 3D solid khép kín, mô phỏng tương tác vật lý trực tiếp trên trình duyệt, mã nguồn firmware MicroPython cho bo mạch ESP32-C3, và gói hồ sơ in 3MF / BOM sản xuất.
+  </p>
+
+  <h2>1.2. Triết lý Thiết kế Tự do &amp; Toàn Bộ Danh Mục Hình Thái Kiến Trúc Vật Lý</h2>
+  <p>
+    Khác biệt với các ứng dụng sinh 3D tạo hình tĩnh chỉ cho ra các bức tượng không hoạt động được, CyberBuild áp dụng triết lý <strong>CyberBrick Modular Hardware &amp; Open Morphology</strong>:
+  </p>
+  <ul>
+    <li>Mọi thiết kế đều được xây dựng xung quanh các linh kiện cơ điện tử có thật trong kho linh kiện (Component Directory): Bo mạch ESP32-C3 Core, Shield mở rộng I/O, Động cơ Servo vị trí 180°, Động cơ Servo quay liên tục 360°, Động cơ giảm tốc N20, Pin LiPo, Cảm biến, Công tắc và Ốc vít tiêu chuẩn M2/M2.5/M3.</li>
+    <li><strong>Mở khóa toàn diện thiết kế tự do:</strong> Hệ thống không đóng khung người dùng trong một số mẫu robot cố định (như chỉ có robot 2 chân hay 4 chân). Hệ thống hỗ trợ <strong>7 Họ Hình Thái Kiến Trúc Vật Lý Toàn Diện</strong> (Functional Automation, Articulated Machinery, Wheeled Vehicles, Bipedal Walking, Quadruped Robots, Desktop Companions, Serpentine Undulating) và người dùng có thể tự do sáng tạo bất kỳ cỗ máy nào dựa trên nhu cầu thực tế.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== KIẾN TRÚC TỔNG THỂ ==================== -->
+  <h1>2. Kiến Trúc Tổng Thể Hệ Thống (High-Level Architecture)</h1>
+
+  <h2>2.1. Sơ đồ Khối Kiến Trúc Toàn Diện</h2>
+  <div class="arch-diagram">
++---------------------------------------------------------------------------------------------------+
+|                                 CLIENT TIER (Trình duyệt Web - React 18 & Vite)                    |
+|                                                                                                   |
+|  +-------------------------+  +--------------------------------+  +----------------------------+  |
+|  |     Chat & Design UI    |  |     Interactive 3D Viewport    |  |     Inspector & Flow Tab   |  |
+|  |  - Multimodal Prompt    |  |  - Three.js WebGL Renderer     |  |  - 7-Step Step Audits      |  |
+|  |  - Reference Image Upload| |  - Exploded View / X-Ray Wire  |  |  - 3D Part Slicing Specs   |  |
+|  |  - Step Status Badges   |  |  - Joint Orbit & Pan Cam       |  |  - MicroPython Code Viewer |  |
+|  +-------------------------+  +--------------------------------+  +----------------------------+  |
++---------------------------------------------------------------------------------------------------+
+             |                                         |                                  |
+             | WebSocket / PostMessage                 | WebAssembly                      | Dynamic
+             v                                         v                                  v
++-------------------------+               +--------------------------+       +------------------------+
+|   CAD Worker (Thread)   |               | Rapier3D Physics Engine  |       | Export Engine          |
+|  - Manifold CAD WASM    |               |  - Real-time Rigidbody   |       |  - 3MF Production Plate|
+|  - CSG Solid Operations |               |  - Joint Limit Audits    |       |  - Binary STL Exporter |
+|  - 2-Manifold Meshing   |               |  - Motor Kinematics & RL |       |  - BOM CSV Generator   |
++-------------------------+               +--------------------------+       +------------------------+
+             ^                                                                            ^
+             | JSON Spec                                                                  | Zip Pack
++---------------------------------------------------------------------------------------------------+
+|                              ORCHESTRATION & CLOUD RUN BACKEND                                    |
+|                                                                                                   |
+|  +-------------------------------------+      +------------------------------------------------+  |
+|  |  Node.js Design Orchestrator (API)  | <--> |  Google Cloud Secret Manager                    |  |
+|  |  - Multi-step Pipeline Coordinator  |      |  - AI_API_KEY (Meta Muse LLM / Google Vertex)  |  |
+|  |  - Directory Stock Verifier         |      +------------------------------------------------+  |
+|  |  - Schema Validation (JSON-Schema)  |      +------------------------------------------------+  |
+|  +-------------------------------------+ <--> |  Firebase Hosting & Cloud Firestore Data Store |  |
+|                                               +------------------------------------------------+  |
++---------------------------------------------------------------------------------------------------+
+  </div>
+
+  <h2>2.2. Phân Tầng Chức Năng (Layered Architecture)</h2>
+  <table style="width:100%;">
+    <thead>
+      <tr>
+        <th style="width:25%;">Phân tầng</th>
+        <th style="width:35%;">Công nghệ nền tảng</th>
+        <th style="width:40%;">Trách nhiệm chính</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Presentation Layer</strong></td>
+        <td>React 18, Three.js, CSS3 Flex/Grid, Canvas2D</td>
+        <td>Hiển thị giao diện người dùng, trình điều khiển camera 3D, chế độ phân tách từng linh kiện (Exploded View), hiển thị mã nguồn MicroPython và bảng kiểm tra kỹ thuật.</td>
+      </tr>
+      <tr>
+        <td><strong>2. AI Orchestration Layer</strong></td>
+        <td>Meta Muse Spark 1.3 LLM, Cloud Run API Service, Google Secret Manager</td>
+        <td>Tiếp nhận prompt của người dùng, phân tích ngữ nghĩa, ánh xạ linh kiện thực tế và điều phối luồng xử lý 7 bước thiết kế chuẩn hóa.</td>
+      </tr>
+      <tr>
+        <td><strong>3. Geometric CAD Kernel</strong></td>
+        <td>Manifold CAD Engine (WebAssembly), Web Worker Service</td>
+        <td>Thực hiện các phép toán hình học lập thể (Boolean CSG: Union, Difference, Intersection) trong luồng ngầm (Worker thread), đảm bảo 100% chi tiết là khối đặc kín nước.</td>
+      </tr>
+      <tr>
+        <td><strong>4. Physics Simulation Layer</strong></td>
+        <td>Rapier3D Physics Engine (WASM), Kinematic Joint Constraints</td>
+        <td>Mô phỏng lực kéo trọng trường, ma sát tiếp xúc, hành vi xoay động cơ và kiểm tra độ ổn định trọng tâm theo thời gian thực (60 FPS).</td>
+      </tr>
+      <tr>
+        <td><strong>5. Firmware Synthesis Layer</strong></td>
+        <td>TypeScript Code Compiler, MicroPython Engine Template</td>
+        <td>Tự động phân bổ cổng GPIO, chống trùng lặp bus tín hiệu và biên dịch toàn bộ cấu trúc thư mục code nạp vi điều khiển ESP32-C3.</td>
+      </tr>
+      <tr>
+        <td><strong>6. Production Export Layer</strong></td>
+        <td>Binary STL Generator, 3MF Archive Builder, fflate Zip</td>
+        <td>Đóng gói mô hình in 3D với hướng đặt đĩa in tối ưu, tạo file cấu hình Bambu/Prusa và xuất file BOM mua hàng chi tiết.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== QUY TRÌNH 8 BƯỚC ==================== -->
+  <h1>3. Quy Trình Kỹ Thuật 8 Bước (The 8-Step Design Flow)</h1>
+  <p>
+    Toàn bộ quá trình biến đổi ý tưởng thành hiện thực được chuẩn hóa thành 8 giai đoạn nối tiếp nhau, đảm bảo mỗi bước đều có kiểm định và bằng chứng nghiệm thu kỹ thuật (Technical Verification):
+  </p>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 1: TUYỂN CHỌN LINH KIỆN (COMPONENTS)</span>
+      <span class="badge badge-pass">DIRECTORY AUDITED</span>
+    </div>
+    <div class="step-box-title">Từ Ý Tưởng Ngôn Ngữ Đến Danh Mục Linh Kiện Thực Tế</div>
+    <p>
+      Hệ thống phân tích nhu cầu vận hành của thiết bị (cần bao nhiêu động cơ quay liên tục, bao nhiêu góc xoay giới hạn, nguồn pin dung lượng bao nhiêu, có cần đèn LED báo hiệu không) và đối chiếu trực tiếp với <strong>Component Directory (Kho linh kiện)</strong> của người dùng. Nếu kho thiếu linh kiện, hệ thống sẽ cảnh báo tình trạng tồn kho (Stock Shortage) để người dùng chủ động điều chỉnh.
+    </p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 2: TẠO HÌNH 3D TỔNG THỂ THEO INPUT (3D FORM &amp; ENVELOPE)</span>
+      <span class="badge badge-pass">CONCEPT GENERATED</span>
+    </div>
+    <div class="step-box-title">Định Hình Kiểu Dáng 3D &amp; Kích Thước Bao Không Gian Khái Niệm</div>
+    <p>
+      Dựa trực tiếp trên ngôn ngữ tự nhiên và ý tưởng của người dùng (ví dụ: bàn xoay chụp ảnh studio, xe tự hành, búp bê robot để bàn, cánh tay gắp...), hệ thống ánh xạ vào hệ thống 7 họ hình thái kiến trúc vật lý và sinh ra hình thái 3D tổng thể (Overall 3D Silhouette):
+    </p>
+    <ul>
+      <li>Xác định hình dạng bao chủ đạo (Envelope Shape Archetype: đĩa trụ xoay <code>cylinder_platter</code>, khối hộp khí động học <code>box_chassis</code>, cánh tay đòn <code>articulated_arm</code>, bệ trụ phân tầng <code>pan_tilt_station</code>, chuỗi đốt uốn lượn <code>segmented_chain</code>...).</li>
+      <li>Ước tính kích thước bao ban đầu <code>[Width, Depth, Height] mm</code> và ngôn ngữ tạo hình (Design Style: <code>functional_minimalist</code>, <code>rugged_industrial</code>, <code>sleek_consumer</code>, <code>retro_steampunk</code>, <code>cute_companion</code>).</li>
+      <li>Liệt kê các đặc trưng hình học signature (rãnh đồng tâm chống trượt, góc vát công nghiệp, viền bezel đèn LED, ngàm tháo lắp nhanh).</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 3: BỐ TRÍ &amp; FIT LINH KIỆN VÀO HÌNH 3D (PACKAGING &amp; FIT OPTIMIZATION)</span>
+      <span class="badge badge-warn">AUTO-ADJUST &amp; EXPAND</span>
+    </div>
+    <div class="step-box-title">Kiểm Tra Độ Vừa Vặn Linh Kiện &amp; Tự Động Điều Chỉnh Hình 3D (Auto-Expand)</div>
+    <p>
+      Hệ thống đưa toàn bộ các linh kiện đã chọn ở Bước 1 (Core ESP32-C3, Shield I/O, Pin LiPo, Động cơ Servo, Công tắc, Cụm LED) vào ướm thử bên trong hình 3D tổng thể của Bước 2:
+    </p>
+    <ul>
+      <li><strong>Thuật toán Fit Check:</strong> Tính toán kích thước bao thực tế và thể tích khoang chứa cần thiết (kèm khoảng hở cách điện và tuyến cáp tối thiểu 4.0 mm).</li>
+      <li><strong>Cơ chế tự động điều chỉnh hình 3D (Auto-Expand):</strong> Nếu các linh kiện không fit vừa hình 3D ban đầu (ví dụ: pin LiPo hoặc khối bo mạch bị cấn nắp), hệ thống sẽ <em>tự động mở rộng kích thước hình 3D</em> (tăng chiều rộng +deltaW, kéo dài +deltaD hoặc nâng cao +deltaH) để bao bọc trọn vẹn mọi linh kiện.</li>
+      <li>Xác định tọa độ không gian chính xác, tâm quay các khớp động học và sơ đồ đấu dây bus tín hiệu.</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 4: THIẾT KẾ VỎ CƠ KHÍ &amp; CHI TIẾT IN 3D (CAD SPECIFICATION)</span>
+      <span class="badge badge-pass">WATERTIGHT SOLID</span>
+    </div>
+    <div class="step-box-title">Tổng Hợp Hình Học Chi Tiết 3D Solid với Chuẩn Dung Sai Cơ Khí</div>
+    <p>
+      Nhân Manifold CAD tính toán các chi tiết vỏ, ngàm giữ linh kiện và cơ cấu truyền động dựa trên bảng tiêu chuẩn dung sai lắp ráp:
+    </p>
+    <ul>
+      <li><strong>Push-fit (+0.2 mm):</strong> Dung sai khớp ép chặt cho ổ cắm servo, khe cài bo mạch.</li>
+      <li><strong>Slide-fit (+0.35 mm):</strong> Khớp trượt nắp đậy pin và nắp khoang điện tử.</li>
+      <li><strong>Journal bearing (+0.5 mm):</strong> Khớp xoay tự do không bị ma sát bề mặt.</li>
+      <li><strong>Chuẩn lỗ ốc (Fasteners):</strong> Lỗ ren trực tiếp M2 (Ø1.8 mm tap), M2.5 (Ø2.2 mm tap), M3 (Ø2.7 mm tap) hoặc lỗ thông tuốt bắt đai ốc (Clearance Ø2.4/Ø2.9/Ø3.4 mm).</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 5: KIỂM ĐỊNH TIÊU CHUẨN KỸ THUẬT (ENGINEERING RULES AUDIT)</span>
+      <span class="badge badge-warn">MULTI-CRITERIA PASS/WARN</span>
+    </div>
+    <div class="step-box-title">Kiểm Tra Toàn Diện Khả Năng Lắp Ghép, Va Chạm &amp; Bền Cơ Điện Tử</div>
+    <p>
+      Hệ thống chạy thuật toán quét giao cắt đa giác và động cơ học:
+    </p>
+    <ul>
+      <li><strong>Kiểm tra va chạm tĩnh (Static Interferences):</strong> Đảm bảo không có linh kiện điện tử nào đâm xuyên vào vỏ nhựa hoặc đè lên nhau (thể tích giao cắt = 0 mm³).</li>
+      <li><strong>Kiểm tra va chạm động (Dynamic ROM Collision):</strong> Khi servo xoay đến các góc cực hạn, các cánh tay hoặc mâm xoay không va quẹt vào thân đế.</li>
+      <li><strong>Kiểm tra đường vào tuốc-nơ-vít (Screwdriver Line-of-Sight):</strong> Mỗi ốc vít lắp ráp bắt buộc phải có một hình trụ ảo đường kính Ø6.5 mm thông thoáng kéo dài ra ngoài vỏ để tuốc-nơ-vít có thể thao tác thẳng hàng.</li>
+      <li><strong>Dự toán công suất &amp; thời lượng pin:</strong> Tính toán dòng tiêu thụ đỉnh (peak current) và dòng nghỉ để ước tính thời gian hoạt động của viên pin LiPo B-BA001.</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 6: MÔ PHỎNG ĐỘNG LỰC HỌC (PHYSICS SIMULATION &amp; SCENARIOS)</span>
+      <span class="badge badge-pass">RAPIER3D READY</span>
+    </div>
+    <div class="step-box-title">Mô Phỏng Trực Tiếp Trên Trình Duyệt Với Động Lực Học Khối Rắn</div>
+    <p>
+      Hệ thống tự động biên dịch toàn bộ cụm lắp ráp thành cây vật lý Rapier3D:
+    </p>
+    <ul>
+      <li>Gán khối lượng thực tế (dựa trên mật độ nhựa in 3D 1.24 g/cm³ và khối lượng kim loại của linh kiện trong catalog).</li>
+      <li>Tạo các khớp quay trục thực thụ (Revolute Joints) có lực kéo mô-men xoắn của servo B-PG001 (1.8 kg·cm).</li>
+      <li>Cấu hình các kịch bản hành vi cử động (Behaviors): Xoay studio 360°, bước chụp 8 góc, dáng đi cân bằng RL, chế độ búp bê khớp (Ragdoll physics).</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 7: TỰ ĐỘNG SINH FIRMWARE NHÚNG (EMBEDDED FIRMWARE)</span>
+      <span class="badge badge-pass">MICROPYTHON COMPILED</span>
+    </div>
+    <div class="step-box-title">Sinh Trọn Bộ Mã Nguồn Điều Khiển Cho Vi Điều Khiển ESP32-C3</div>
+    <p>
+      Hệ thống sinh sẵn bộ mã nguồn MicroPython phân lớp hoàn chỉnh để nạp trực tiếp qua cổng USB-C:
+    </p>
+    <ul>
+      <li><code>config.py</code>: Khai báo ánh xạ chân GPIO (chống xung đột bus tín hiệu), thông số PID và cấu hình xung PWM servo.</li>
+      <li><code>servo.py</code>: Trình điều khiển xung servo và chuyển đổi góc độ/vận tốc góc mượt mà.</li>
+      <li><code>robot.py</code>: Lớp điều khiển phần cứng cấp cao, điều khiển dáng đi và đồng bộ các cụm chấp hành.</li>
+      <li><code>ai_controller.py</code>: Khối điều khiển thông minh tự động hóa hành vi theo kịch bản.</li>
+      <li><code>main.py</code>: Vòng lặp sự kiện chính thời gian thực (non-blocking event loop).</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">BƯỚC 8: KÝ DUYỆT HỆ THỐNG &amp; ĐÁNH GIÁ SẴN SÀNG (SYSTEM SIGN-OFF)</span>
+      <span class="badge badge-pass">PRODUCTION READY</span>
+    </div>
+    <div class="step-box-title">Tổng Hợp Điểm Sẵn Sàng Sản Xuất (Readiness Score) &amp; Xuất Bản Hồ Sơ</div>
+    <p>
+      Đánh giá toàn diện qua 6 bộ chỉ tiêu nghiệm thu (Test Suites). Khi vượt qua các bài kiểm tra, hệ thống mở khóa tính năng xuất file sản xuất: Đĩa in 3MF đa chi tiết, File STL nhị phân, Danh mục vật tư mua sắm BOM CSV và gói Full Project ZIP.
+    </p>
+  </div>
+
+  <!-- ==================== GIẢI MÃ ĐIỂM SẴN SÀNG ==================== -->
+  <h2>3.1. Giải Mã Điểm Mức Độ Sẵn Sàng (Readiness Score - Ví dụ 88% Ready)</h2>
+  <p>
+    Tại Bước 8, người dùng sẽ nhìn thấy một con số đánh giá tổng quát (ví dụ <strong>88% Ready</strong> hoặc <strong>100% Ready</strong>). Đây là kết quả tính toán có trọng số từ 6 bộ tiêu chí kiểm định nghiêm ngặt:
+  </p>
+  <table style="width:100%;">
+    <thead>
+      <tr>
+        <th style="width:5%;">STT</th>
+        <th style="width:30%;">Bài kiểm tra (Test Suite)</th>
+        <th style="width:15%;">Trạng thái</th>
+        <th style="width:50%;">Ý nghĩa kỹ thuật</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Component Stock</strong></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>100% linh kiện đều nằm trong danh mục và có sẵn số lượng tồn kho.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Watertight 2-Manifold</strong></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>100% các chi tiết vỏ in 3D đều là khối kín nước, không lỗi topology.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Static &amp; Dynamic ROM Collision</strong></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Không có va chạm tĩnh hay va quẹt cơ khí khi cơ cấu xoay hết hành trình.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Screwdriver Tool Access</strong></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Mọi ốc vít lắp ráp đều có đường thẳng Ø6.5 mm đưa tuốc-nơ-vít vào.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Actuator Torque &amp; COM</strong></td>
+        <td><span class="badge badge-warn">WARN</span></td>
+        <td>Mô-men xoắn đạt chuẩn, nhưng biên ổn định trọng tâm cần tải thêm đối trọng khi mang vật nặng. (Lý do trừ điểm).</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>GPIO Pinout &amp; Power Budget</strong></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Không xung đột chân vi điều khiển; thời lượng pin ước tính khả dụng.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout info">
+    <strong>Công thức tính toán:</strong> Điểm số được tổng hợp theo công thức: <code>Score = ((Số bài Pass + Số bài Warn × 0.7) / Tổng số bài test) × 100%</code>. Khi có 5 bài Pass và 1 bài Warn nhẹ, điểm số sẽ đạt mức <strong>88% – 95% ("Ready with Advisories")</strong>. Thiết bị hoàn toàn khả thi để in 3D và chạy thực tế, kèm các khuyến nghị tối ưu hiển thị rõ ràng trên bảng điều khiển Inspector.
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== CÁC PHÂN HỆ CHI TIẾT ==================== -->
+  <h1>4. Đặc Tả Chi Tiết Các Phân Hệ Chức Năng (Subsystems)</h1>
+
+  <h2>4.1. Thư Viện Tạo Hình Cơ Khí Tham Số (Parametric CAD Builders)</h2>
+  <p>
+    Để đảm bảo tốc độ sinh tức thời và độ chính xác cơ khí tuyệt đối, CyberBuild tích hợp các bộ sinh CAD tham số chuyên dụng trong thư mục <code>src/cad/</code>:
+  </p>
+
+  <table style="width:100%;">
+    <thead>
+      <tr>
+        <th style="width:20%;">Bộ sinh CAD</th>
+        <th style="width:25%;">Cơ cấu đặc trưng</th>
+        <th style="width:55%;">Chi tiết cấu tạo cơ học</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Turntable Builder</strong><br><code>turntable.ts</code></td>
+        <td>Bàn xoay 360°, Mâm xoay chụp ảnh studio, Bệ xoay quét mẫu 3D.</td>
+        <td>
+          - Mâm xoay tròn Ø96 mm với các rãnh gân đồng tâm (concentric anti-slip grooves) chống trượt vật thể.<br>
+          - Ngàm bắt vít tâm khớp servo horn B-PG002 có đường hầm xuyên tuốc-nơ-vít siết trục.<br>
+          - Hộp đế chịu lực chứa bo ESP32-C3, Shield và pin LiPo; nắp điện tử hạ thấp phẳng để mâm xoay tự do 360° không cạ quẹt.<br>
+          - Đèn LED trạng thái bố trí ngay mặt tiền đế quan sát rõ ràng.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2. Rover Builder</strong><br><code>rover.ts</code></td>
+        <td>Xe tự hành 2 bánh vi sai, Xe tank, Robot vận chuyển mini.</td>
+        <td>
+          - Khung gầm hạ thấp trọng tâm, khoang chứa pin LiPo tháo lắp nhanh dạng trượt.<br>
+          - Giá bắt động cơ giảm tốc N20 B-GM001 hoặc servo B-PG002.<br>
+          - Cụm bánh xe bọc lốp cao su in TPU hoặc bánh đa hướng (caster wheel) cân bằng.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>3. Robotic Arm Builder</strong><br><code>arm.ts</code></td>
+        <td>Cánh tay robot 3-4 DOF, Cơ cấu gắp sản phẩm, Cần cẩu bốc dỡ.</td>
+        <td>
+          - Khớp đế xoay (Base Yaw) chịu tải trọng dọc trục.<br>
+          - Khung đòn cánh tay kiểu U-bracket tối ưu hóa mô-men uốn.<br>
+          - Đầu kẹp (Gripper) cơ cấu đòn bẩy hoặc ngón tay song song kẹp giữ đồ vật.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>4. Biped / Humanoid</strong><br><code>humanoid.ts</code></td>
+        <td>Robot 2 chân bước đi, Robot chim cánh cụt, Khủng long 2 chân.</td>
+        <td>
+          - Cơ cấu chân bước đi bập bênh (Waddle &amp; Stride) dùng 2 servo đồng bộ.<br>
+          - Khớp háng và bàn chân vát góc tiếp đất tăng diện tích đa giác thăng bằng.<br>
+          - Phần thân gắn mắt kính LED RGB WS2812B biểu cảm.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>5. Quadruped Builder</strong><br><code>quadruped.ts</code></td>
+        <td>Robot 4 chân, Chó robot, Nhện robot mini.</td>
+        <td>
+          - Khung thân đối xứng chịu vặn xoắn dọc trục.<br>
+          - 4 cụm chân với khớp hông (hip) và khớp gối (knee) độc lập.<br>
+          - Dáng đi trot gait phối hợp nhịp nhàng 4 chân.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>6. Companion Builder</strong><br><code>companion.ts</code></td>
+        <td>Robot trợ lý để bàn, Bệ camera an ninh Pan-Tilt.</td>
+        <td>
+          - Khối đế để bàn nặng, chống trượt.<br>
+          - Cơ cấu gimbal 2 trục Pan (quay ngang 180°) và Tilt (nâng hạ góc nhìn 180°).<br>
+          - Đầu robot tích hợp cụm hiển thị LED RGB.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>7. Snake Builder</strong><br><code>snake.ts</code></td>
+        <td>Robot rắn uốn lượn nhiều phân đoạn.</td>
+        <td>
+          - Các module khớp cầu liên kết nối tiếp bằng servo xen kẽ góc quay.<br>
+          - Chuyển động sóng uốn lượn (Serpentine wave locomotion).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== TOÀN BỘ HÌNH THÁI KIẾN TRÚC VẬT LÝ ==================== -->
+  <h2>4.2. Toàn Bộ Danh Mục Các Hình Thái Kiến Trúc Vật Lý &amp; Cơ Cấu (Physical Architecture Archetypes &amp; Morphologies)</h2>
+  <p>
+    Khác biệt với các hệ thống AI đồ họa chỉ sinh các khối tượng tĩnh không có chức năng cơ điện tử, CyberBuild sở hữu <strong>Hệ Thống Phân Loại Kiến Trúc Vật Lý Toàn Diện (The Complete Physical Architecture Taxonomy)</strong>. Mọi ý tưởng bằng ngôn ngữ tự nhiên hoặc ảnh phác thảo của người dùng đều được phân tích, ánh xạ vào <strong>7 Họ Hình Thái Kiến Trúc Vật Lý</strong> và các biến thể cơ cấu cụ thể:
+  </p>
+
+  <!-- BẢNG TỔNG HỢP 7 HỌ HÌNH THÁI VẬT LÝ -->
+  <table style="width:100%;">
+    <thead>
+      <tr>
+        <th style="width:18%;">Họ kiến trúc</th>
+        <th style="width:22%;">Archetype Codes</th>
+        <th style="width:30%;">Cơ cấu &amp; Bậc tự do (DOFs)</th>
+        <th style="width:30%;">Ứng dụng &amp; Thiết bị điển hình</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Máy tự động hóa chức năng<br>(Functional Automation)</strong></td>
+        <td><code>turntable</code><br><code>pet_feeder</code><br><code>barrier_gate</code><br><code>conveyor</code><br><code>smart_fan</code><br><code>automation_machine</code></td>
+        <td>
+          - 1-2 DOF quay liên tục hoặc giới hạn góc.<br>
+          - Bàn xoay đĩa phẳng trục trung tâm.<br>
+          - Cánh gạt định lượng ngũ cốc/thức ăn.<br>
+          - Thanh chắn barie nâng hạ đối trọng.<br>
+          - Con lăn kéo băng tải mini chuyển hàng.
+        </td>
+        <td>Bàn xoay chụp ảnh sản phẩm 360°, bệ xoay quét mẫu 3D scanner, máy cho thú cưng ăn tự động, cổng barie kiểm soát ra vào, cửa xoay turnstile, băng tải chuyển hàng mini, máy tưới cây tự động, quạt thông minh đảo gió 180°, cầu cất rút (drawbridge), rèm cửa tự động.</td>
+      </tr>
+      <tr>
+        <td><strong>2. Máy móc khớp nối &amp; Động học<br>(Articulated Machinery)</strong></td>
+        <td><code>arm</code><br><code>crane</code><br><code>catapult</code><br><code>excavator</code><br><code>kinetic_sculpture</code></td>
+        <td>
+          - 3-6 DOF chuỗi động học nối tiếp.<br>
+          - Khớp đế xoay Base Yaw (180°/360°).<br>
+          - Khớp bả vai (Shoulder), khớp khuỷu (Elbow).<br>
+          - Ngàm kẹp song song (Gripper/Claw).<br>
+          - Cơ cấu đòn bẩy tích năng bắn đá.
+        </td>
+        <td>Cánh tay robot công nghiệp 3-6 DOF, robot SCARA, cần cẩu tháp (tower crane), cần cẩu giàn, máy xúc gầu đào, máy gắp phân loại sản phẩm pick-and-place, máy bắn đá trebuchet/catapult, cần đèn bàn gập đa hướng, ray trượt camera (camera slider).</td>
+      </tr>
+      <tr>
+        <td><strong>3. Nền tảng bánh xe &amp; Xe cộ<br>(Wheeled Vehicles)</strong></td>
+        <td><code>rover</code><br><code>car</code><br><code>boat</code><br><code>tank</code><br><code>truck</code><br><code>forklift</code></td>
+        <td>
+          - 2-4 DOF chuyển động vi sai hoặc lái Ackerman.<br>
+          - Động cơ DC N20 hoặc Servo 360° dẫn động bánh.<br>
+          - Bánh dẫn hướng đa hướng (caster wheel).<br>
+          - Khung gầm chịu lực có khoang trượt pin LiPo hạ thấp trọng tâm.<br>
+          - Khung tháp nâng thẳng đứng (Forklift mast).
+        </td>
+        <td>Xe tự hành 2 bánh vi sai, xe đua thể thao, xe tải container, xe quái thú monster truck, xe buýt, xe cứu thương, xe cứu hỏa, máy kéo nông nghiệp, xe nâng hàng pallet, xe ủi đất, xe tăng bánh xích, xe thám hiểm sao Hỏa (Mars rover), tàu thuyền mô hình.</td>
+      </tr>
+      <tr>
+        <td><strong>4. Robot bước đi 2 chân &amp; Sinh vật<br>(Bipedal Walking)</strong></td>
+        <td><code>humanoid</code><br><code>duck</code><br><code>chicken</code><br><code>biped</code><br><code>walker</code></td>
+        <td>
+          - 2-4 DOF bước đi bập bênh (Waddle &amp; Stride).<br>
+          - Khớp háng lắc lư dịch chuyển trọng tâm.<br>
+          - Bàn chân mở rộng (Webbed/Wide sole) tăng diện tích đa giác thăng bằng.<br>
+          - Tùy chọn 2 cánh/tay phụ cử động.
+        </td>
+        <td>Robot hình người 2 chân, robot chim cánh cụt lắc lư, vịt/ngỗng/gà robot bước đi, sinh vật 2 chi (kangaroo bập bênh, khủng long bạo chúa T-Rex), robot chiến binh cơ giáp bipedal mecha.</td>
+      </tr>
+      <tr>
+        <td><strong>5. Robot 4 chân &amp; Động vật<br>(Quadruped Robots)</strong></td>
+        <td><code>quadruped</code><br><code>dog</code><br><code>cat</code><br><code>spider</code><br><code>hexapod</code></td>
+        <td>
+          - 4-8 DOF chân khớp độc lập.<br>
+          - Dáng đi phối hợp nhịp nhàng (Trot / Walk gait).<br>
+          - Khung thân xương sống chịu xoắn.<br>
+          - Cụm khớp hông (Hip) và khớp gối (Knee) hạ thấp trọng tâm khi tiếp đất.
+        </td>
+        <td>Chó robot thông minh, mèo robot, linh miêu, chó sói, cáo, sư tử, gấu, rùa robot, thằn lằn bò, nhện robot 4 chân / 6 chân (hexapod).</td>
+      </tr>
+      <tr>
+        <td><strong>6. Robot trợ lý để bàn &amp; Bệ xoay<br>(Desktop Companions)</strong></td>
+        <td><code>companion</code><br><code>desk_agent</code><br><code>stationary</code></td>
+        <td>
+          - 2-3 DOF xoay quét gimbal.<br>
+          - Trục xoay ngang Pan (0-180° / 360°).<br>
+          - Trục gật ngửa Tilt (0-180°).<br>
+          - Khối đế chống trượt tích hợp mạch điện &amp; pin.<br>
+          - Cụm LED ma trận hoặc 2 mắt kính WS2812B biểu cảm.
+        </td>
+        <td>Loa trợ lý AI để bàn (XiaoZhi / ZhaoZhi), camera an ninh Pan-Tilt tự động theo dõi, trạm radar bám bắt mục tiêu, tháp quét laser, búp bê animatronic cử động đầu, hoa khiêu vũ nhảy theo nhạc, giá đỡ điện thoại tracking khuôn mặt.</td>
+      </tr>
+      <tr>
+        <td><strong>7. Cơ cấu uốn lượn &amp; Đa phân đoạn<br>(Serpentine Undulating)</strong></td>
+        <td><code>snake</code><br><code>serpent</code><br><code>dragon</code></td>
+        <td>
+          - 3-8 DOF chuỗi đốt nối tiếp.<br>
+          - Khớp servo liên kết góc quay xen kẽ.<br>
+          - Tạo sóng chuyển động hình sin (Serpentine wave locomotion) đẩy thân tiến tới nhờ ma sát hướng.
+        </td>
+        <td>Robot rắn trườn vượt địa hình hiểm trở, rắn hổ mang ngóc đầu đe dọa, trăn săn mồi, sâu róm co duỗi (caterpillar), rết nhiều chân, rồng thần Á Đông uốn lượn, đoàn tàu mini khớp mềm.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- CHI TIẾT ĐẶC TẢ TỪNG HỌ KIẾN TRÚC -->
+  <h3>4.2.1. Phân Tích Kỹ Thuật Chi Tiết của Từng Họ Kiến Trúc Vật Lý</h3>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">HỌ 1: MÁY TỰ ĐỘNG HÓA CHỨC NĂNG (FUNCTIONAL AUTOMATION)</span>
+      <span class="badge badge-pass">DISCRETE MECHANISM</span>
+    </div>
+    <div class="step-box-title">Bàn xoay 360°, Bộ cấp thức ăn định lượng, Cổng barie &amp; Băng tải mini</div>
+    <p>
+      Tập trung tự động hóa các tác vụ lặp lại phục vụ sản xuất, đời sống, nhiếp ảnh hoặc nuôi thú cưng:
+    </p>
+    <ul>
+      <li><strong>Bàn xoay 360° (<code>turntable</code>):</strong> Sử dụng động cơ servo quay liên tục B-PG002 gắn đồng trục với mâm tròn (Ø90–Ø140 mm). Mâm xoay có gờ chống trượt và đường kính khoét ngàm servo horn chuẩn xác. Vỏ đế hình trụ hoặc hộp bo góc thấp chứa toàn bộ ESP32-C3, Shield và pin LiPo; nắp điện tử cách mâm xoay 2.0 mm đảm bảo chuyển động không ma sát.</li>
+      <li><strong>Máy cho thú cưng ăn (<code>pet_feeder</code>):</strong> Phễu nạp hình chóp cụt dẫn xuống buồng đĩa quay chia 4–6 ngăn. Mỗi vòng quay kích hoạt servo nhả chính xác định lượng hạt thức ăn xuống khay ăn góc nghiêng 35°.</li>
+      <li><strong>Cổng barie tự động (<code>barrier_gate</code>):</strong> Trụ đứng bảo vệ cơ cấu servo góc 180° dẫn động thanh chắn dài 120–180 mm. Bổ sung cơ cấu lò xo cân bằng đối trọng hoặc gờ hãm cơ khí chống rơ lắc khi thanh barie dừng ở vị trí 0° và 90°.</li>
+      <li><strong>Băng chuyền mini (<code>conveyor</code>):</strong> Hai trục rulo in 3D căng đai cao su mềm, truyền động bằng motor N20 qua bánh răng giảm tốc, có ray chắn biên dẫn hướng mẫu vật.</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">HỌ 2: MÁY MÓC KHỚP NỐI &amp; ĐỘNG HỌC (ARTICULATED MACHINERY)</span>
+      <span class="badge badge-pass">SERIAL KINEMATIC CHAIN</span>
+    </div>
+    <div class="step-box-title">Cánh tay robot 3-6 DOF, Cần cẩu tháp, Máy gắp &amp; Máy xúc đào</div>
+    <p>
+      Phục vụ thao tác vật lý trong không gian 3 chiều (định vị điểm mút end-effector, gắp nhả tải trọng, xúc dỡ vật liệu):
+    </p>
+    <ul>
+      <li><strong>Cánh tay robot chuỗi (<code>arm</code>):</strong> Gồm khớp xoay đế (Base Yaw: 0–180°), khớp bả vai (Shoulder Pitch: 15–165°), khớp khuỷu (Elbow Pitch: 0–150°) và cổ tay/kẹp gắp. Cấu trúc đòn tay dạng dầm hộp rỗng chữ U (U-bracket) có xương sườn trợ lực, giảm biến dạng uốn cong và rung động khi nâng tải 40–80g.</li>
+      <li><strong>Ngàm kẹp gắp (Gripper/Claw):</strong> Cơ cấu thanh răng - bánh răng đối xứng hoặc cơ cấu 4 khâu bản lề. Bề mặt má kẹp lồng đệm cao su hoặc rãnh khía tăng độ ma sát bám giữ đồ vật.</li>
+      <li><strong>Cần cẩu &amp; Máy xúc (<code>crane</code>, <code>excavator</code>):</strong> Kết cấu giàn không gian chịu kéo/nén với hệ puly dây cáp kéo tời hoặc cơ cấu đòn bẩy tay đẩy tương đương xi-lanh thủy lực công nghiệp.</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">HỌ 3: NỀN TẢNG BÁNH XE &amp; PHƯƠNG TIỆN (WHEELED VEHICLES)</span>
+      <span class="badge badge-pass">MOBILE KINEMATICS</span>
+    </div>
+    <div class="step-box-title">Xe tự hành 2 bánh vi sai, Xe tải, Xe nâng hàng &amp; Xe địa hình</div>
+    <p>
+      Phương tiện di chuyển linh hoạt trên mặt sàn hoặc địa hình gồ ghề:
+    </p>
+    <ul>
+      <li><strong>Dẫn động vi sai 2 bánh độc lập (Differential Drive):</strong> Sử dụng 2 motor N20 hoặc 2 servo 360° gắn trực tiếp vào bánh xe chủ động hai bên, kèm 1 bánh lăn cầu (caster wheel) trợ lực. Khả năng quay vòng tại chỗ bán kính R=0 mm giúp xe xoay sở dễ dàng trong không gian hẹp.</li>
+      <li><strong>Tối ưu hóa trọng tâm xe (Low Center-of-Gravity):</strong> Pin LiPo và Shield điện tử được bố trí nằm phẳng sát đáy sàn xe, giúp góc nghiêng tới hạn chống lật đạt trên 35°.</li>
+      <li><strong>Cơ cấu nâng pallet (<code>forklift</code>):</strong> Trục vít me hoặc thanh răng đứng dẫn hướng càng nâng song song, cho phép nâng hạ hộp hàng mini lên độ cao 60–100 mm.</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">HỌ 4 &amp; 5: ROBOT BƯỚC ĐI 2 CHÂN &amp; 4 CHÂN (BIO-INSPIRED LEGGED LOCOMOTION)</span>
+      <span class="badge badge-pass">STABLE DYNAMIC GAIT</span>
+    </div>
+    <div class="step-box-title">Robot hình người, Vịt/Chim cánh cụt bước đi, Chó/Mèo robot 4 chân</div>
+    <p>
+      Ứng dụng nguyên lý phỏng sinh học để di chuyển tự nhiên và ổn định:
+    </p>
+    <ul>
+      <li><strong>Robot 2 chân bước đi bập bênh (<code>humanoid</code>, <code>duck</code>, <code>biped</code>):</strong> Áp dụng dáng đi lắc hông (Waddle &amp; Stride Gait). Khi bước chân trái, servo nghiêng thân dồn toàn bộ trọng tâm sang bàn chân phải, giải phóng chân trái nhấc lên bước tới trước. Bàn chân đế rộng (Webbed/Wide sole) có đế vát viền ngoài ngăn ngừa vấp ngã.</li>
+      <li><strong>Robot 4 chân (<code>quadruped</code>, <code>dog</code>):</strong> 4 cụm chân độc lập điều khiển theo chu kỳ bước trot gait. Hai chân chéo góc (trước-trái &amp; sau-phải) cùng nhấc lên và tiếp đất đồng thời, tạo ra độ ổn định động học cao mà không bị lật ngang.</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-box-header">
+      <span class="step-number-tag">HỌ 6 &amp; 7: ROBOT TRỢ LÝ ĐỂ BÀN &amp; ROBOT UỐN LƯỢN (COMPANIONS &amp; SERPENTINE)</span>
+      <span class="badge badge-pass">INTERACTIVE &amp; HYPER-REDUNDANT</span>
+    </div>
+    <div class="step-box-title">Bệ camera Pan-Tilt 2 trục, Loa trợ lý AI, Robot rắn chuyển động sóng hình sin</div>
+    <p>
+      Thiết bị tương tác cảm xúc trực quan và cơ cấu siêu tự do vượt địa hình:
+    </p>
+    <ul>
+      <li><strong>Bệ Pan-Tilt &amp; Companion (<code>companion</code>, <code>desk_agent</code>):</strong> Đế nặng chống trượt chứa toàn bộ khối nguồn và vi điều khiển; cụm gimbal 2 trục (quay ngang Pan 180°, gật ngửa Tilt 180°) mang đầu robot tích hợp camera hoặc màn hình mắt kính LED RGB WS2812B diễn hoạt cảm xúc sống động.</li>
+      <li><strong>Robot rắn uốn lượn (<code>snake</code>, <code>serpent</code>):</strong> Chuỗi nhiều đốt thân liên kết nối tiếp bằng servo xen kẽ góc quay 90°. Bộ điều khiển nhúng chạy thuật toán sóng sin Serpentine Wave: <code>&theta;<sub>i</sub>(t) = A &middot; sin(&omega;t + i &middot; &delta;)</code> tạo ra lực đẩy ma sát không đẳng hướng giúp robot trườn về phía trước.</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== DANH MỤC LINH KIỆN TIÊU CHUẨN ==================== -->
+  <h2>4.3. Danh Mục Linh Kiện Tiêu Chuẩn (CyberBrick Component Directory)</h2>
+  <table style="width:100%;">
+    <thead>
+      <tr>
+        <th style="width:15%;">Mã linh kiện</th>
+        <th style="width:25%;">Tên gọi kỹ thuật</th>
+        <th style="width:20%;">Phân loại</th>
+        <th style="width:40%;">Thông số kỹ thuật chính</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>B-XA003</code></td>
+        <td>ESP32-C3 Core Module</td>
+        <td><span class="badge badge-core">VI ĐIỀU KHIỂN</span></td>
+        <td>RISC-V 160MHz, Wi-Fi 4, BLE 5.0, Cổng USB-C nạp code, Kích thước 24×24 mm.</td>
+      </tr>
+      <tr>
+        <td><code>B-XA004</code></td>
+        <td>CyberBrick I/O Shield</td>
+        <td><span class="badge badge-core">BO MỞ RỘNG</span></td>
+        <td>Phân phối 8 cổng servo 5V, Cổng cấp nguồn LiPo, Mạch sạc pin tích hợp.</td>
+      </tr>
+      <tr>
+        <td><code>B-PG001</code></td>
+        <td>Micro Servo 180°</td>
+        <td><span class="badge badge-pass">ĐỘNG CƠ VỊ TRÍ</span></td>
+        <td>Mô-men xoắn 1.8 kg·cm, Góc quay giới hạn 0-180°, Điều khiển xung PWM 50Hz.</td>
+      </tr>
+      <tr>
+        <td><code>B-PG002</code></td>
+        <td>Continuous 360° Servo</td>
+        <td><span class="badge badge-pass">ĐỘNG CƠ LIÊN TỤC</span></td>
+        <td>Quay liên tục vô tận 360°, Điều khiển tốc độ và đảo chiều bằng độ rộng xung.</td>
+      </tr>
+      <tr>
+        <td><code>B-GM001</code></td>
+        <td>N20 Geared DC Motor</td>
+        <td><span class="badge badge-pass">ĐỘNG CƠ GIẢM TỐC</span></td>
+        <td>Hộp số kim loại siêu nhỏ tỉ số 1:50, Tốc độ 150 RPM @ 6V, Trục D-shaft Ø3 mm.</td>
+      </tr>
+      <tr>
+        <td><code>B-BA001</code></td>
+        <td>LiPo Battery 3.7V</td>
+        <td><span class="badge badge-warn">NGUỒN NĂNG LƯỢNG</span></td>
+        <td>Pin Lithium Polymer 500mAh 3.7V, Mạch bảo vệ quá nạp/quá xả tích hợp.</td>
+      </tr>
+      <tr>
+        <td><code>B-XL001</code></td>
+        <td>Addressable RGB LED</td>
+        <td><span class="badge badge-pass">HIỂN THỊ</span></td>
+        <td>Đèn LED ma trận/đơn WS2812B, Chuẩn giao tiếp 1 dây (1-Wire NeoPixel).</td>
+      </tr>
+      <tr>
+        <td><code>B-XA007</code></td>
+        <td>Mini Power Switch</td>
+        <td><span class="badge badge-pass">CÔNG TẮC</span></td>
+        <td>Công tắc gạt trượt 3 chân ngắt nguồn pin an toàn.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== HẠ TẦNG & BẢO MẬT ==================== -->
+  <h1>5. Hạ Tầng Điện Toán Đám Mây &amp; Bảo Mật (Cloud &amp; Security)</h1>
+
+  <h2>5.1. Mô Hình Triển Khai Không Máy Chủ (Serverless Cloud Architecture)</h2>
+  <div class="arch-diagram">
+           [ Người Dùng Cuối / Browser Client ]
+                          |
+             HTTPS (SSL/TLS 1.3 Termination)
+                          |
+                          v
+         +----------------------------------+
+         |      Firebase Hosting CDN        |  <-- Cung cấp SPA tĩnh (HTML, WASM, JS, CSS)
+         |     (https://cyberbuild-ai.web.app)|
+         +----------------------------------+
+                          |
+       API Requests (/api/design, /api/search)
+                          |
+                          v
+         +----------------------------------+
+         |       Google Cloud Run           |  <-- Container tự động co giãn (Auto-scale 0..N)
+         |       (Service: "api")           |
+         +----------------------------------+
+                   |              |
+                   v              v
+     +-------------------+  +--------------------------------+
+     | Cloud Firestore   |  | Google Cloud Secret Manager    |
+     | (Lưu trữ dự án &  |  | - Khóa "AI_API_KEY" bí mật     |
+     |  thư viện thiết kế)|  | (Không bao giờ lộ xuống Client)|
+     +-------------------+  +--------------------------------+
+  </div>
+
+  <h2>5.2. Chính Sách Bảo Mật Khóa API &amp; Trải Nghiệm Khách Hàng Doanh Nghiệp</h2>
+  <ul>
+    <li><strong>Ẩn hoàn toàn khóa bí mật:</strong> Khách hàng sử dụng dịch vụ trên web không cần (và không bao giờ phải) nhập bất kỳ API key nào. Mọi giao dịch thông minh được máy chủ Cloud Run ký duyệt nội bộ thông qua khóa định danh <code>AI_API_KEY</code> lưu trữ trong Google Cloud Secret Manager.</li>
+    <li><strong>Kiểm soát truy cập IAM:</strong> Dịch vụ chỉ ủy quyền cho Service Account nội bộ của dự án Google Cloud truy xuất Secret Manager theo nguyên tắc đặc quyền tối thiểu (Principle of Least Privilege).</li>
+    <li><strong>Tính toán an toàn tại Client (Local Sandboxing):</strong> Toàn bộ quá trình cắt lớp hình học CAD (Manifold CSG) và mô phỏng vật lý (Rapier3D) đều thực thi trực tiếp trên máy người dùng bằng WebAssembly. Máy chủ chỉ đóng vai trò phân tích logic và điều phối, giúp giảm 90% chi phí tính toán đám mây và loại bỏ độ trễ mạng.</li>
+  </ul>
+
+  <!-- ==================== KẾT LUẬN & ĐỊNH HƯỚNG ==================== -->
+  <h1>6. Kết Luận &amp; Lộ Trình Phát Triển (Conclusion &amp; Roadmap)</h1>
+  <p>
+    CyberBuild AI đã chứng minh tính đột phá trong việc chuyển hóa hoàn toàn quy trình R&amp;D phần cứng truyền thống: rút ngắn thời gian thiết kế một mẫu robot/cơ điện tử từ vài tuần làm việc thủ công xuống còn <strong>dưới 60 giây</strong> thông qua AI khép kín.
+  </p>
+
+  <h2>Lộ trình nâng cấp tiếp theo (Roadmap 2026 - 2027):</h2>
+  <ul>
+    <li><strong>Mở rộng danh mục cảm biến thông minh:</strong> Bổ sung thêm cảm biến khoảng cách ToF Laser (B-SN001), Cảm biến tư thế 6 trục IMU MPU6050, và Module Camera AI nhận diện vật thể.</li>
+    <li><strong>Bộ điều khiển ảo qua Web Bluetooth (Web-BLE):</strong> Cho phép người dùng kết nối trực tiếp từ trình duyệt đến bo mạch ESP32-C3 qua Bluetooth không dây để nạp code và điều khiển joystick từ xa không cần cài đặt phần mềm.</li>
+    <li><strong>Tự động tối ưu hình học tự do (Generative Topology Optimization):</strong> Áp dụng thuật toán giảm trọng lượng cấu trúc xốp nhằm tiết kiệm 30% nhựa in 3D nhưng vẫn đảm bảo độ cứng vững cơ học.</li>
+  </ul>
+
+  <div style="margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 9pt; color: #64748b; text-align: center;">
+    Tài liệu được biên soạn tự động bởi CyberBuild Engineering Platform · Lưu hành nội bộ
+  </div>
+
+</body>
+</html>

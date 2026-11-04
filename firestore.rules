@@ -1,0 +1,203 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// This security rules file assumes the following data structures:
+//
+// Collection: users
+// Document ID: {userId} (matches Firebase Auth UID)
+// Fields:
+//   - uid: string (required, immutable, matches {userId}) - User's Firebase Auth UID
+//   - email: string (optional, <= 254 chars) - User's email address (PII, strictly owner-private)
+//   - displayName: string (optional, <= 120 chars) - User's display name
+//   - photoURL: string (optional, <= 2048 chars) - User's avatar URL
+//   - inventory: map (optional, <= 200 keys) - User's custom component inventory quantities
+//   - activeProjectId: string (optional, <= 128 chars) - Currently active project ID
+//   - updatedAt: int or timestamp (optional) - Last profile/inventory update time
+//
+// Collection: users/{userId}/projects
+// Document ID: {projectId}
+// Fields:
+//   - id: string (required, immutable, matches {projectId}, <= 128 chars) - Project identifier
+//   - uid: string (required, immutable, matches {userId}) - Owner's Firebase Auth UID
+//   - name: string (required, 1..120 chars) - Robot project name
+//   - spec: map (required, <= 50 keys) - RobotDesignSpec configuration object
+//   - hasDesign: bool (required) - Whether a robot design has been generated
+//   - versions: list (optional, <= 50 items) - Design version snapshots
+//   - chat: list (optional, <= 100 items) - AI conversation message history
+//   - aiSteps: map (optional, <= 30 keys) - AI pipeline stage status map
+//   - createdAt: int or timestamp (optional, immutable if present) - Creation time
+//   - updatedAt: int or timestamp (optional) - Last modification time
+//
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the authenticated user owns the resource path
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if the authenticated user matches the existing document's uid
+    function isDocOwner() {
+      return isAuthenticated() && resource.data.uid == request.auth.uid;
+    }
+
+    // Verify uid field hasn't been tampered with on create
+    function uidUnchanged(userId) {
+      return 'uid' in request.resource.data &&
+             request.resource.data.uid is string &&
+             request.resource.data.uid == userId &&
+             request.resource.data.uid == request.auth.uid;
+    }
+
+    // Ensure uid field is not modified on update
+    function uidNotModified() {
+      return 'uid' in request.resource.data &&
+             request.resource.data.uid == resource.data.uid;
+    }
+
+    // Validate required fields exist
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    // Validate that the document contains only the allowed fields
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // Validate string length bounds
+    function validStringLength(field, minLen, maxLen) {
+      return request.resource.data[field] is string &&
+             request.resource.data[field].size() >= minLen &&
+             request.resource.data[field].size() <= maxLen;
+    }
+
+    // Validate optional string (if present, must be string within length bounds)
+    function isValidOptionalString(field, minLen, maxLen) {
+      return !(field in request.resource.data) ||
+             (request.resource.data[field] is string &&
+              request.resource.data[field].size() >= minLen &&
+              request.resource.data[field].size() <= maxLen);
+    }
+
+    // Validate optional timestamp or integer epoch ms
+    function isValidOptionalTime(field) {
+      return !(field in request.resource.data) ||
+             request.resource.data[field] is int ||
+             request.resource.data[field] is timestamp;
+    }
+
+    // ===============================================================
+    // Domain Validators (Used in BOTH create and update)
+    // ===============================================================
+
+    function isValidUserProfile(userId) {
+      let data = request.resource.data;
+      return hasRequiredFields(['uid']) &&
+             hasOnlyAllowedFields([
+               'uid',
+               'email',
+               'displayName',
+               'photoURL',
+               'inventory',
+               'activeProjectId',
+               'updatedAt'
+             ]) &&
+             uidUnchanged(userId) &&
+             isValidOptionalString('email', 0, 254) &&
+             isValidOptionalString('displayName', 0, 120) &&
+             isValidOptionalString('photoURL', 0, 2048) &&
+             (!('inventory' in data) || (data.inventory is map && data.inventory.size() <= 200)) &&
+             isValidOptionalString('activeProjectId', 0, 128) &&
+             isValidOptionalTime('updatedAt');
+    }
+
+    function isValidProject(userId, projectId) {
+      let data = request.resource.data;
+      return hasRequiredFields(['id', 'uid', 'name', 'spec', 'hasDesign']) &&
+             hasOnlyAllowedFields([
+               'id',
+               'uid',
+               'name',
+               'spec',
+               'hasDesign',
+               'versions',
+               'chat',
+               'aiSteps',
+               'createdAt',
+               'updatedAt'
+             ]) &&
+             uidUnchanged(userId) &&
+             data.id is string &&
+             data.id == projectId &&
+             data.id.size() >= 1 &&
+             data.id.size() <= 128 &&
+             validStringLength('name', 1, 120) &&
+             data.spec is map &&
+             data.spec.size() <= 50 &&
+             data.hasDesign is bool &&
+             (!('versions' in data) || (data.versions is list && data.versions.size() <= 50)) &&
+             (!('chat' in data) || (data.chat is list && data.chat.size() <= 100)) &&
+             (!('aiSteps' in data) || (data.aiSteps is map && data.aiSteps.size() <= 30)) &&
+             isValidOptionalTime('createdAt') &&
+             isValidOptionalTime('updatedAt');
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // User Profile & Component Directory
+    match /users/{userId} {
+      allow get, list: if isOwner(userId);
+
+      allow create: if isOwner(userId) &&
+                       isValidUserProfile(userId);
+
+      allow update: if isOwner(userId) &&
+                       isDocOwner() &&
+                       uidNotModified() &&
+                       isValidUserProfile(userId);
+
+      allow delete: if isOwner(userId) &&
+                       isDocOwner();
+
+      // User Robot Design Projects
+      match /projects/{projectId} {
+        allow get, list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidProject(userId, projectId);
+
+        allow update: if isOwner(userId) &&
+                         isDocOwner() &&
+                         uidNotModified() &&
+                         request.resource.data.id == resource.data.id &&
+                         (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt) &&
+                         isValidProject(userId, projectId);
+
+        allow delete: if isOwner(userId) &&
+                         isDocOwner();
+      }
+    }
+
+    // Default deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
